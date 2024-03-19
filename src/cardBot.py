@@ -18,7 +18,7 @@ intents = discord.Intents.all()
 # intents.message_content = True
 
 bot = commands.Bot(command_prefix="/", intents=intents)
-cardFile = open("carddata.json", "r")
+cardFile = open("../data/carddata.json", "r")
 cardData = json.load(cardFile)
 cards = cardData['cards']
 

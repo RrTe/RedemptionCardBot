@@ -6,10 +6,10 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
-from dotenv import load_dotenv, dotenv_values
+#from dotenv import load_dotenv, dotenv_values
 
-project_folder = os.path.expanduser('~/')
-load_dotenv(os.path.join(project_folder, '.env'))
+#project_folder = os.path.expanduser('~/')
+#load_dotenv(os.path.join(project_folder, '.env'))
 
 #print(project_folder)
 #print(os.getenv("TOKEN"))

@@ -91,6 +91,9 @@ async def on_message(message):
   if message.author == bot.user:
     return
     
+  if message.content.startswith('[['):
+    print(f'Message contains [[')
+    
   pattern_result = re.findall(PATTERN, message.content)
   print(pattern_result)
   print(message.content)

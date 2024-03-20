@@ -9,7 +9,7 @@ from discord.ext import commands
 import re
 #from dotenv import load_dotenv, dotenv_values
 
-PATTERN = "/\[\[([^\]]+)\]\]/g"
+PATTERN = r'\[\[([^\]]+)\]\]'
 
 
 #project_folder = os.path.expanduser('~/')
@@ -90,9 +90,6 @@ async def card(interaction: discord.Interaction, cards: str):
 async def on_message(message):
   if message.author == bot.user:
     return
-    
-  if message.content.startswith('[['):
-    print(f'Message contains [[')
     
   pattern_result = re.findall(PATTERN, message.content)
   print(pattern_result)

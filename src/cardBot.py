@@ -6,9 +6,11 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
+import re
 #from dotenv import load_dotenv, dotenv_values
 
 PATTERN = "/\[\[([^\]]+)\]\]/g"
+
 
 #project_folder = os.path.expanduser('~/')
 #load_dotenv(os.path.join(project_folder, '.env'))
@@ -88,10 +90,12 @@ async def card(interaction: discord.Interaction, cards: str):
 async def on_message(message):
   if message.author == bot.user:
     return
+  pattern_result = re.findall(PATTERN, message.content)
+  print(pattern_result)
 
-  if "[[" in message.content:
+  if pattern_result:
     print(f'Message contains card pattern')
-  
+
 
 try:
   token = os.getenv("TOKEN") or ""

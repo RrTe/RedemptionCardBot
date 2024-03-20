@@ -49,7 +49,7 @@ async def test(ctx):
   print('test')
 """
 
-
+# create 25 entries for auto completion of card names based on the user input
 async def cardEntries(
     interaction: discord.Interaction,
     current: str,
@@ -74,7 +74,7 @@ async def cardEntries(
   return [app_commands.Choice(name=card['Name'] + ' (' + card["Set"] + ')', value=card['ImageFile']) for card in cards if current.lower() in card['Name'].lower()]
 """
 
-
+# bot command for listing card names and resolve chosen card name into card-image-url
 @bot.tree.command(name="card", description="Show a card")
 @app_commands.describe(cards="Cards to choose from")
 @app_commands.autocomplete(cards=cardEntries)
@@ -90,8 +90,10 @@ async def card(interaction: discord.Interaction, cards: str):
 async def on_message(message):
   if message.author == bot.user:
     return
+    
   pattern_result = re.findall(PATTERN, message.content)
   print(pattern_result)
+  print(message.content)
 
   if pattern_result:
     print(f'Message contains card pattern')

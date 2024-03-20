@@ -8,7 +8,7 @@ from discord import app_commands
 from discord.ext import commands
 #from dotenv import load_dotenv, dotenv_values
 
-PATTERN: Final[str] = "/\[\[([^\]]+)\]\]/g"
+PATTERN = "/\[\[([^\]]+)\]\]/g"
 
 #project_folder = os.path.expanduser('~/')
 #load_dotenv(os.path.join(project_folder, '.env'))

@@ -8,11 +8,14 @@ from discord import app_commands
 from discord.ext import commands
 #from dotenv import load_dotenv, dotenv_values
 
+PATTERN: Final[str] = "/\[\[([^\]]+)\]\]/g"
+
 #project_folder = os.path.expanduser('~/')
 #load_dotenv(os.path.join(project_folder, '.env'))
 
 #print(project_folder)
 #print(os.getenv("TOKEN"))
+
 
 intents = discord.Intents.all()
 # intents.message_content = True
@@ -80,17 +83,15 @@ async def card(interaction: discord.Interaction, cards: str):
   )
 
 
-"""
 @bot.event
+# Normal Bot message handling for testing
 async def on_message(message):
   if message.author == bot.user:
     return
 
-  if message.content.startswith('>hello'):
-    await message.channel.send('Hello!')
-
-  await message.channel.send('http://www.redemptionquick.com/lackey/sets/setimages/general/001-Adam.jpg')
-"""
+  if "[[" in message.content:
+    print(f'Message contains card pattern')
+  
 
 try:
   token = os.getenv("TOKEN") or ""

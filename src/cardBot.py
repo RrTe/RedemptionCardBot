@@ -13,7 +13,10 @@ from typing import Dict, Any
 #from dotenv import load_dotenv, dotenv_values
 
 PATTERN = r'\[\[([^\]]+)\]\]'
+#text = "[[text1]] some other text [[text2]] more text [[text3]]"
 
+#matches = re.findall(PATTERN, text)
+#print(matches)
 
 #project_folder = os.path.expanduser('~/')
 #load_dotenv(os.path.join(project_folder, '.env'))
@@ -91,6 +94,7 @@ async def card(interaction: discord.Interaction, cards: str):
 # only first card found per match will be taken
 async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
   cardList = []
+  #print(cardNames)
   for cardName in cardNames:
     for card in cards:
       if cardName.lower() in card["Name"].lower(): # first card found
@@ -100,23 +104,23 @@ async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
 
 async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
   embedList = []
+  #print(len(cardList))
   for card in cardList:
-    cardImageURL = "http://www.redemptionquick.com/lackey/sets/setimages/general/" + \
+    card_image_url = "http://www.redemptionquick.com/lackey/sets/setimages/general/" + \
                     card["ImageFile"] + ".jpg"
-    embed=discord.Embed(title = card["Name"], url = cardImageURL, description = card["Type"])
+    embed=discord.Embed(title = card["Name"], url = card_image_url, description = card["Type"])
     embed.set_thumbnail(url = card_image_url)
-    embed.add_field(name = "card_set", value = card["Set"], inline=True)
-    embed.add_field(name = "card_identifiers", value = card["Identifier"], inline=True)
-    embed.add_field(name = "card_ability", value = card["SpecialAbility"], inline=True)
-    embed.add_field(name = "card_stats", value = card["Strength"] + "/" + card["Toughness"],
+    embed.add_field(name = "Set", value = card["Set"], inline=True)
+    embed.add_field(name = "Identifier", value = "*" + card["Identifier"] + "*", inline=True)
+    embed.add_field(name = "Special Ability", value = card["SpecialAbility"], inline=True)
+    embed.add_field(name = "Strength/Toughness", value = card["Strength"] + "/" + card["Toughness"],
                     inline=True)
-    embed.add_field(name = "card_alignment", value = card["Alignment"], inline=True)
-    embed.add_field(name = "card_brigades", value = card["Brigade"], inline=True)
-    embed.add_field(name = "card_class", value = card["Class"], inline=True)
-    embed.add_field(name = "card_reference", value = card["Reference"], inline=True)
-    embed.add_field(name = "card_testament", value = card["Testament"], inline=True)
-    embed.add_field(name = "card_legality", value = card["Legality"], inline=True)
-    embed.add_field(name = "card_rarity", value = card["Rarity"], inline=True)
+    embed.add_field(name = "Alignment", value = card["Alignment"], inline=True)
+    embed.add_field(name = "Brigades", value = card["Brigade"], inline=True)
+    embed.add_field(name = "Class", value = card["Class"], inline=True)
+    embed.add_field(name = "Reference", value = card["Reference"], inline=True)
+    embed.add_field(name = "Testament", value = card["Testament"], inline=True)
+    embed.add_field(name = "Legality", value = card["Legality"], inline=True)
     embed.set_footer(text = card["Rarity"])
     embedList.append(embed)
     
@@ -132,10 +136,14 @@ async def on_message(message):
   # find all entered card name patterns
   # and for each pattern extract the first matching card
   pattern_results = re.findall(PATTERN, message.content)
+  #print(pattern_results)
+  #print(message.content)
   if pattern_results:
     firstCardsFound = await extractCards(pattern_results)
     if firstCardsFound:
       await message.channel.send(embeds = await createEmbeds(firstCardsFound))
+    else:
+      await message.channel.send(f"No card(s) found")
   #for result in pattern_results:  
   #print(pattern_results)
   #print(message.content)

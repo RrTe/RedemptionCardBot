@@ -135,7 +135,7 @@ async def on_message(message):
   if pattern_results:
     firstCardsFound = await extractCards(pattern_results)
     if firstCardsFound:
-      await message.channel.send(embeds = createEmbeds(firstCardsFound))
+      await message.channel.send(embeds = await createEmbeds(firstCardsFound))
   #for result in pattern_results:  
   #print(pattern_results)
   #print(message.content)

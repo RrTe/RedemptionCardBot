@@ -108,19 +108,21 @@ async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
   for card in cardList:
     card_image_url = "http://www.redemptionquick.com/lackey/sets/setimages/general/" + \
                     card["ImageFile"] + ".jpg"
-    embed=discord.Embed(title = card["Name"], url = card_image_url, description = card["Type"])
+    embed=discord.Embed(colour = discord.Colour.dark_gold(), title = card["Name"],
+                        url = card_image_url, description = card["Type"])
     embed.set_thumbnail(url = card_image_url)
+    #embed.set_image(url = card_image_url)
     embed.add_field(name = "Set", value = card["Set"], inline=True)
-    embed.add_field(name = "Identifier", value = "*" + card["Identifier"] + "*", inline=True)
-    embed.add_field(name = "Special Ability", value = card["SpecialAbility"], inline=True)
+    embed.add_field(name = "Identifier", value = "*" + card["Identifier"] + "*", inline = False)
+    embed.add_field(name = "Special Ability", value = card["SpecialAbility"], inline = False)
     embed.add_field(name = "Strength/Toughness", value = card["Strength"] + "/" + card["Toughness"],
                     inline=True)
-    embed.add_field(name = "Alignment", value = card["Alignment"], inline=True)
-    embed.add_field(name = "Brigades", value = card["Brigade"], inline=True)
-    embed.add_field(name = "Class", value = card["Class"], inline=True)
-    embed.add_field(name = "Reference", value = card["Reference"], inline=True)
-    embed.add_field(name = "Testament", value = card["Testament"], inline=True)
-    embed.add_field(name = "Legality", value = card["Legality"], inline=True)
+    embed.add_field(name = "Alignment", value = card["Alignment"], inline = True)
+    embed.add_field(name = "Brigades", value = card["Brigade"], inline = True)
+    embed.add_field(name = "Class", value = card["Class"], inline = True)
+    embed.add_field(name = "Reference", value = card["Reference"], inline = True)
+    embed.add_field(name = "Testament", value = card["Testament"], inline = True)
+    embed.add_field(name = "Legality", value = card["Legality"], inline = True)
     embed.set_footer(text = card["Rarity"])
     embedList.append(embed)
     

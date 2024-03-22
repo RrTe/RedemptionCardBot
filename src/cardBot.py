@@ -18,8 +18,8 @@ PATTERN = r'\[\[([^\]]+)\]\]'
 #matches = re.findall(PATTERN, text)
 #print(matches)
 
-#project_folder = os.path.expanduser('~/')
-#load_dotenv(os.path.join(project_folder, '.env'))
+#project_folder = os.path.expanduser("~/")
+#load_dotenv(os.path.join(project_folder, ".env"))
 
 #print(project_folder)
 #print(os.getenv("TOKEN"))
@@ -31,16 +31,16 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
 cardFile = open("data/carddata.json", "r")
 cardData = json.load(cardFile)
-cards = cardData['cards']
+cards = cardData["cards"]
 
 
 @bot.event
 async def on_ready():
-  print('We have logged in as {0.user}'.format(bot))
+  print("We have logged in as {0.user}".format(bot))
 """
   try:
     #synced = await bot.tree.sync()
-    bot.tree.copy_global_to(guild=discord.Object(id=os.environ['GUILD_ID']))
+    bot.tree.copy_global_to(guild=discord.Object(id=os.environ["GUILD_ID"]))
     synced = await bot.tree.sync(guild=None)
     print(f"Synced {len(synced)} command(s)")
   except Exception as e:
@@ -52,7 +52,7 @@ async def on_ready():
 # Normal Bot command for testing
 @bot.command()
 async def test(ctx):
-  print('test')
+  print("test")
 """
 
 # create 25 entries for auto completion of card names based on the user input
@@ -60,24 +60,24 @@ async def cardNameEntries(
     interaction: discord.Interaction,
     current: str,
 ) -> list[app_commands.Choice[str]]:
-  #cards = ['Card1', 'Card2', 'Card3', 'Card4']
+  #cards = ["Card1", "Card2", "Card3", "Card4"]
   cardNameList = []
-  #print(f'Cards: {len(cards)}')
-  if current == '':  # nothing typed in by the user yet => return all cards, but only first 25 options
+  #print(f"Cards: {len(cards)}")
+  if current == "":  # nothing typed in by the user yet => return all cards, but only first 25 options
     for card in cards[:24]:
       cardNameList.append(
-          app_commands.Choice(name=card["Name"] + ' (' + card["Set"] + ')', value=card["ImageFile"]))
+          app_commands.Choice(name=card["Name"] + " (" + card["Set"] + ")", value=card["ImageFile"]))
   else:
     for card in cards:
       if current.lower() in card["Name"].lower():
-        #print(f'Current: {current.lower()} - card name: {card["Name"].lower()}')
+        #print(f"Current: {current.lower()} - card name: {card["Name"].lower()}")
         cardNameList.append(
-            app_commands.Choice(name=card["Name"] + ' (' + card["Set"] + ')', value=card["ImageFile"]))
-  #print(f'Cards filtered: {len(cardList)}')
+            app_commands.Choice(name=card["Name"] + " (" + card["Set"] + ")", value=card["ImageFile"]))
+  #print(f"Cards filtered: {len(cardList)}")
   #print(cardList[:24])
   return cardNameList[:24]  # only 25 options supported
 """
-  return [app_commands.Choice(name=card['Name'] + ' (' + card["Set"] + ')', value=card['ImageFile']) for card in cards if current.lower() in card['Name'].lower()]
+  return [app_commands.Choice(name=card["Name"] + " (" + card["Set"] + ")", value=card["ImageFile"]) for card in cards if current.lower() in card["Name"].lower()]
 """
 
 # bot command for listing card names and resolve chosen card name into card-image-url
@@ -85,16 +85,23 @@ async def cardNameEntries(
 @app_commands.describe(cards="Cards to choose from")
 @app_commands.autocomplete(cards=cardNameEntries)
 async def card(interaction: discord.Interaction, cards: str):
-  #print(f'http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg')
+  #print(f"http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg")
   await interaction.response.send_message(
-      f'http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg'
+      f"http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg"
   )
 
+# bot command for listing card names and display the selected card name afterwards
+@bot.tree.command(name="cardname", description="Show a card name")
+@app_commands.describe(cards="Card names to choose from")
+@app_commands.autocomplete(cards=cardNameEntries)
+async def cardname(interaction: discord.Interaction, cards: str):
+  await interaction.response.send_message(cards)
+  
 # extract all cards from carddata.json which matches the given card name pattern
 # only first card found per match will be taken
 async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
   cardList = []
-  #print(cardNames)
+
   for cardName in cardNames:
     for card in cards:
       if cardName.lower() in card["Name"].lower(): # first card found
@@ -104,7 +111,7 @@ async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
 
 async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
   embedList = []
-  #print(len(cardList))
+
   for card in cardList:
     card_image_url = "http://www.redemptionquick.com/lackey/sets/setimages/general/" + \
                     card["ImageFile"] + ".jpg"
@@ -113,6 +120,8 @@ async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
                         url = card_image_url, description = card["Type"])
     embed.set_thumbnail(url = card_image_url)
     #embed.set_image(url = card_image_url)
+    #embed.set_author(name = "author",
+    #                 icon_url = "https://amiga.freecluster.eu/Redemption/RDE/assets/symbols/blue_small_compressed.png")
     embed.add_field(name = "Set", value = card["Set"], inline=True)
     
     card_identifier = card["Identifier"]
@@ -167,11 +176,6 @@ async def on_message(message):
       await message.channel.send(embeds = await createEmbeds(firstCardsFound))
     else:
       await message.channel.send(f"No card(s) found")
-  #for result in pattern_results:  
-  #print(pattern_results)
-  #print(message.content)
-  #if pattern_results:
-    #print(f'Message contains card pattern')
 
 
 try:

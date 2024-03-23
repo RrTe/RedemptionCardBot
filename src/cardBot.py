@@ -102,11 +102,11 @@ async def cardname(interaction: discord.Interaction, cards: str):
 async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
   cardList = []
 
-  cardFound = None
   for cardName in cardNames:
     cardExactMatch = False
     firstCardFound = False
-    for card in cards:
+    cardFound = None
+    for card in cards: # only max. one card per name must be added.
       if not cardExactMatch:
         if cardName.lower().strip() == card["Name"].lower().strip():
           cardFound = card
@@ -115,8 +115,8 @@ async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
         if not firstCardFound and (cardName.lower() in card["Name"].lower()): # first card found
           cardFound = card
           firstCardFound = True
-  
-  cardList.append(cardFound)
+    cardList.append(cardFound) # only max. one card per name must be added.
+
   return cardList
 
 async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:

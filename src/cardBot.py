@@ -102,11 +102,21 @@ async def cardname(interaction: discord.Interaction, cards: str):
 async def extractCards(cardNames: list[str]) -> list[Dict[str, Any]]:
   cardList = []
 
+  cardFound = None
   for cardName in cardNames:
+    cardExactMatch = False
+    firstCardFound = False
     for card in cards:
-      if cardName.lower() in card["Name"].lower(): # first card found
-        cardList.append(card)
-        break # only select first card
+      if not cardExactMatch:
+        if cardName.lower().strip() == card["Name"].lower().strip():
+          cardFound = card
+          cardExactMatch = True
+          break # if there is a full match, then we're done
+        if not firstCardFound and (cardName.lower() in card["Name"].lower()): # first card found
+          cardFound = card
+          firstCardFound = True
+  
+  cardList.append(cardFound)
   return cardList
 
 async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
@@ -153,7 +163,9 @@ async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
       card_legality = "Classic"
     embed.add_field(name = "Legality", value = card_legality, inline = True)
     
-    embed.set_footer(text = card["Rarity"])
+    embed.set_footer(text = card["Rarity"],
+                     icon_url = "https://amiga.freecluster.eu/Redemption/RDE/assets/sets/0.png")
+    # print(f"https://amiga.freecluster.eu/Redemption/RDE/assets/sets/" + card["Set"] + ".png")
     embedList.append(embed)
     
   return embedList

@@ -5,13 +5,13 @@ import json
 import os
 import re
 import discord
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord import app_commands, embeds
 from discord.ext import commands
 from typing import Dict, Any
 #from dotenv import load_dotenv, dotenv_values
 
-keep_alive()
+#keep_alive()
 
 PATTERN = r'\[\[([^\]]+)\]\]'
 #text = "[[text1]] some other text [[text2]] more text [[text3]]"

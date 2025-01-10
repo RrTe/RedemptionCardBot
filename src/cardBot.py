@@ -11,6 +11,11 @@ from discord.ext import commands
 from typing import Dict, Any
 #from dotenv import load_dotenv, dotenv_values
 
+#*****************************************************************************************
+# for daki.cc token needs to be provided within own config.py file and imported here with
+# from config import TOKEN
+#*****************************************************************************************
+
 keep_alive()
 
 PATTERN = r'\[\[([^\]]+)\]\]'
@@ -192,6 +197,10 @@ async def on_message(message):
 
 
 try:
+  #*****************************************************************************************
+  # for daki.cc token needs to assigned just by
+  # token = TOKEN
+  #*****************************************************************************************
   token = os.getenv("TOKEN") or ""
   if token == "":
     raise Exception("Please add your token to the Secrets pane.")

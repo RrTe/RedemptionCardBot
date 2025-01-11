@@ -93,7 +93,8 @@ async def cardNameEntries(
 async def card(interaction: discord.Interaction, cards: str):
   #print(f"http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg")
   await interaction.response.send_message(
-      f"http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg"
+      #f"http://www.redemptionquick.com/lackey/sets/setimages/general/{cards}.jpg"
+      f"https://raw.githubusercontent.com/jalstad/RedemptionLackeyCCG/refs/heads/master/RedemptionQuick/sets/setimages/general/{cards}.jpg"
   )
 
 # bot command for listing card names and display the selected card name afterwards
@@ -129,9 +130,11 @@ async def createEmbeds(cardList: list[Dict[str, Any]]) -> list[discord.Embed]:
   embedList = []
 
   for card in cardList:
-    card_image_url = "http://www.redemptionquick.com/lackey/sets/setimages/general/" + \
+    #card_image_url = "http://www.redemptionquick.com/lackey/sets/setimages/general/" + \
+    #                card["ImageFile"] + ".jpg"
+    card_image_url = "https://raw.githubusercontent.com/jalstad/RedemptionLackeyCCG/refs/heads/master/RedemptionQuick/sets/setimages/general/" + \
                     card["ImageFile"] + ".jpg"
-    
+
     embed=discord.Embed(colour = discord.Colour.dark_gold(), title = card["Name"],
                         url = card_image_url, description = card["Type"])
     embed.set_thumbnail(url = card_image_url)

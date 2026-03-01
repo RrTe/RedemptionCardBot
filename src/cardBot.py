@@ -5,6 +5,8 @@ import json
 import os
 import re
 import discord
+import dotenv
+dotenv.load_dotenv()
 from keep_alive import keep_alive
 from discord import app_commands, embeds
 from discord.ext import commands
@@ -206,7 +208,7 @@ try:
   #*****************************************************************************************
   token = os.getenv("TOKEN") or ""
   if token == "":
-    raise Exception("Please add your token to the Secrets pane.")
+    raise Exception("Please add your token to the environment variables.")
   bot.run(token)
 except discord.HTTPException as e:
   if e.status == 429:
